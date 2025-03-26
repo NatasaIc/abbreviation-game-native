@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
-import abbreviations from "../data/abbreviations.json";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../navigation/types";
 import { SafeAreaView } from "react-native-safe-area-context";
+import abbreviations from "../data/abbreviations.json";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "GameScreen"
+>;
 
 const GameScreen = () => {
   const [currentWord, setCurrentWord] = useState("");
@@ -9,6 +17,9 @@ const GameScreen = () => {
   const [points, setPoints] = useState<number>(0);
   const [feedback, setFeedback] = useState("");
   const [correctAnswer, setCorrectAnswer] = useState("");
+  const [guessLeft, setGuessLeft] = useState(2);
+
+  const navigation = useNavigation<NavigationProp>();
 
   const generateQuestion = () => {
     const randomIndex = Math.floor(Math.random() * abbreviations.length);
@@ -38,30 +49,37 @@ const GameScreen = () => {
       setFeedback("");
       generateQuestion();
     }, 2000);
+
+    setGuessLeft(guessLeft - 1);
+
+    if (guessLeft - 1 === 0) {
+      navigation.navigate("ResultScreen", { points });
+    }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <view>
-        <View>
+      <View>
+        <View style={styles.header}>
           <Text style={styles.points}>Poäng: {points}</Text>
+          <Text style={styles.points}>Liv: {guessLeft}</Text>
         </View>
         <View>
-          <Text style={styles.title}>Vad är förkorttningen?</Text>
+          <Text style={styles.title}>Gissa förkorttningen?</Text>
         </View>
         <View style={styles.wordCard}>
           <Text style={styles.currentWord}>{currentWord}</Text>
         </View>
-        <View style={styles.options}>
-          {options.map((option, index) => (
-            <Button
-              key={index}
-              title={option}
-              onPress={() => handleGuess(option)}
-            />
-          ))}
-        </View>
-      </view>
+        {options.map((option, index) => (
+          <Pressable
+            key={index}
+            style={styles.optionButton}
+            onPress={() => handleGuess(option)}
+          >
+            <Text style={styles.optionText}>{option}</Text>
+          </Pressable>
+        ))}
+      </View>
     </SafeAreaView>
   );
 };
@@ -69,22 +87,20 @@ const GameScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#343d46",
+    backgroundColor: "#6883BA",
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
     color: "#ffffff",
     marginBottom: 20,
     textAlign: "center",
   },
   wordCard: {
-    padding: 100,
+    padding: 80,
     marginBottom: 30,
-    textAlign: "center",
-    backgroundColor: "#343d46",
+    backgroundColor: "#F9F9F9",
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 5 },
@@ -94,18 +110,50 @@ const styles = StyleSheet.create({
   },
   currentWord: {
     fontSize: 24,
-    color: "#ffffff",
+    fontWeight: "bold",
+    color: "#000",
     letterSpacing: 3,
+    textAlign: "center",
   },
-  options: {
-    flexDirection: "column",
-    padding: 15,
+  optionButton: {
+    backgroundColor: "#ffffff",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    marginVertical: 10,
+    borderRadius: 8,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  optionText: {
+    fontSize: 18,
+    color: "#000",
+    fontWeight: "300",
+    textAlign: "center",
+    padding: 10,
+  },
+  header: {
+    marginBottom: 30,
+    paddingHorizontal: 20,
+    backgroundColor: "#6883BA",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+    elevation: 20,
+    borderRadius: 10,
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
   },
   points: {
-    fontSize: 15,
-    color: "yellow",
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#E6C229",
     padding: 10,
-    marginBottom: 100,
   },
 });
 
