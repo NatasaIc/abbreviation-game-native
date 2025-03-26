@@ -12,14 +12,17 @@ type NavigationProp = NativeStackNavigationProp<
 >;
 
 const GameScreen = () => {
+  const navigation = useNavigation<NavigationProp>();
+
   const [currentWord, setCurrentWord] = useState("");
   const [options, setOptions] = useState<string[]>([]);
   const [points, setPoints] = useState<number>(0);
-  const [feedback, setFeedback] = useState("");
-  const [correctAnswer, setCorrectAnswer] = useState("");
-  const [guessLeft, setGuessLeft] = useState(2);
 
-  const navigation = useNavigation<NavigationProp>();
+  const [correctAnswer, setCorrectAnswer] = useState("");
+  const [selectedOption, setSelectedOption] = useState("");
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [guessLeft, setGuessLeft] = useState(3);
+  const [hasAnswered, setHasAnswered] = useState(false);
 
   const generateQuestion = () => {
     const randomIndex = Math.floor(Math.random() * abbreviations.length);
@@ -39,22 +42,27 @@ const GameScreen = () => {
   }, []);
 
   const handleGuess = (option: string) => {
+    setSelectedOption(option);
     if (option === correctAnswer) {
       setPoints(points + 1);
-      setFeedback("Rätt!🎉");
+      setHasAnswered(true);
+      setShowAnswer(true);
     } else {
-      setFeedback("Fel! ��" + correctAnswer);
+      setShowAnswer(true);
+      setGuessLeft(guessLeft - 1);
+      setHasAnswered(true);
     }
-    setTimeout(() => {
-      setFeedback("");
-      generateQuestion();
-    }, 2000);
-
-    setGuessLeft(guessLeft - 1);
 
     if (guessLeft - 1 === 0) {
       navigation.navigate("ResultScreen", { points });
     }
+  };
+
+  const handleNextQuestion = () => {
+    setShowAnswer(false);
+    setSelectedOption("");
+    generateQuestion();
+    setHasAnswered(false);
   };
 
   return (
@@ -73,12 +81,27 @@ const GameScreen = () => {
         {options.map((option, index) => (
           <Pressable
             key={index}
-            style={styles.optionButton}
+            style={[
+              styles.optionButton,
+              showAnswer &&
+                option === correctAnswer && { backgroundColor: "lightgreen" },
+              showAnswer &&
+                option === selectedOption &&
+                option !== correctAnswer && { backgroundColor: "#FF0000" },
+            ]}
             onPress={() => handleGuess(option)}
+            disabled={hasAnswered}
           >
             <Text style={styles.optionText}>{option}</Text>
           </Pressable>
         ))}
+        <View>
+          {hasAnswered && (
+            <Pressable style={styles.nextButton} onPress={handleNextQuestion}>
+              <Text style={styles.nextButtonText}>Nästa fråga</Text>
+            </Pressable>
+          )}
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -95,6 +118,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: "#ffffff",
     marginBottom: 20,
+    textAlign: "center",
+  },
+  feedbackText: {
+    color: "#FF0000",
+    fontSize: 18,
+    marginVertical: 10,
     textAlign: "center",
   },
   wordCard: {
@@ -154,6 +183,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#E6C229",
     padding: 10,
+  },
+  nextButton: {
+    backgroundColor: "#E6C229",
+    padding: 15,
+    borderRadius: 8,
+    marginTop: 20,
+    alignItems: "center",
+  },
+  nextButtonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#000",
+    textAlign: "center",
   },
 });
 
