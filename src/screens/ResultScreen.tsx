@@ -12,20 +12,40 @@ type NavigationProp = NativeStackNavigationProp<
 
 type Props = {
   route: ResultScreenProp;
-  navigation: any;
 };
 
 const ResultScreen = ({ route }: Props) => {
   const navigation = useNavigation<NavigationProp>();
   const { points } = route.params;
+
+  const percentages = Math.round((points / 10) * 100);
+
+  const performanceMessage = () => {
+    if (points > 7) {
+      return "Du är legend!👑";
+    } else if (points >= 4) {
+      return "Bra jobbat!💪";
+    } else {
+      return "Försök igen!😅";
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Du fick {points} poäng!🎉</Text>
+      <Text style={styles.pointsText}>Du fick {points} poäng!🎉</Text>
+      <Text style={styles.pointsText}>{percentages}% av maximala poängen!</Text>
+      <Text style={styles.pointsText}>{performanceMessage()}</Text>
       <Pressable
         style={styles.newGameButton}
         onPress={() => navigation.navigate("GameScreen")}
       >
-        Spela igen!
+        <Text>Spela igen!</Text>
+      </Pressable>
+      <Pressable
+        style={styles.newGameButton}
+        onPress={() => navigation.navigate("HomeScreen")}
+      >
+        <Text>Avsluta</Text>
       </Pressable>
     </SafeAreaView>
   );
@@ -47,12 +67,17 @@ const styles = StyleSheet.create({
   },
   newGameButton: {
     backgroundColor: "#4CAF50",
-    padding: 10,
-    borderRadius: 5,
-    width: "60%",
-    margin: 15,
+    padding: 15,
+    borderRadius: 10,
+    width: "70%",
+    margin: 10,
     alignItems: "center",
     justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 4,
   },
 });
 
