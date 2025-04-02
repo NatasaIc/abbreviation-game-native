@@ -1,0 +1,206 @@
+[
+  {
+    "abbreviation": "HTML",
+    "options": [
+      "HyperText Markup Language",
+      "High Tech Machine Learning",
+      "Hidden Text Manipulation"
+    ],
+    "correct_answer": "HyperText Markup Language",
+    "category": "Technology"
+  },
+  {
+    "abbreviation": "CSS",
+    "options": [
+      "Cascading Style Sheets",
+      "Computer System Security",
+      "Central Server System"
+    ],
+    "correct_answer": "Cascading Style Sheets",
+    "category": "Technology"
+  },
+  {
+    "abbreviation": "BP",
+    "options": ["Blood Pressure", "Brain Pressure", "Body Pulse"],
+    "correct_answer": "Blood Pressure",
+    "category": "Medicine"
+  },
+  {
+    "abbreviation": "MRI",
+    "options": [
+      "Muscle Reaction Imaging",
+      "Magnetic Resonance Imaging",
+      "Medical Radiology Index"
+    ],
+    "correct_answer": "Magnetic Resonance Imaging",
+    "category": "Medicine"
+  },
+  {
+    "abbreviation": "ICU",
+    "options": [
+      "Internal Care Unit",
+      "Infection Control Unit",
+      "Intensive Care Unit"
+    ],
+    "correct_answer": "Intensive Care Unit",
+    "category": "Medicine"
+  },
+  {
+    "abbreviation": "CPR",
+    "options": [
+      "Cardiopulmonary Resuscitation",
+      "Critical Pulse Recovery",
+      "Central Pressure Response"
+    ],
+    "correct_answer": "Cardiopulmonary Resuscitation",
+    "category": "Medicine"
+  },
+  {
+    "abbreviation": "HIV",
+    "options": [
+      "High Immunity Value",
+      "Human Immunodeficiency Virus",
+      "Health Infection Virus"
+    ],
+    "correct_answer": "Human Immunodeficiency Virus",
+    "category": "Medicine"
+  },
+  {
+    "abbreviation": "ROI",
+    "options": [
+      "Rate Of Increase",
+      "Revenue Over Income",
+      "Return On Investment"
+    ],
+    "correct_answer": "Return On Investment",
+    "category": "Business"
+  },
+  {
+    "abbreviation": "B2B",
+    "options": ["Brand to Brand", "Business to Business", "Buy to Buy"],
+    "correct_answer": "Business to Business",
+    "category": "Business"
+  },
+  {
+    "abbreviation": "CEO",
+    "options": [
+      "Central Executive Officer",
+      "Corporate Executive Organizer",
+      "Chief Executive Officer"
+    ],
+    "correct_answer": "Chief Executive Officer",
+    "category": "Business"
+  },
+  {
+    "abbreviation": "HR",
+    "options": ["Human Relations", "Hiring Representatives", "Human Resources"],
+    "correct_answer": "Human Resources",
+    "category": "Business"
+  },
+  {
+    "abbreviation": "KPI",
+    "options": [
+      "Key Project Index",
+      "Key Performance Indicator",
+      "Knowledge Process Insight"
+    ],
+    "correct_answer": "Key Performance Indicator",
+    "category": "Business"
+  },
+  {
+    "abbreviation": "FIFA",
+    "options": [
+      "Federation of International Football Activities",
+      "Football International Federation Association",
+      "Fédération Internationale de Football Association"
+    ],
+    "correct_answer": "Fédération Internationale de Football Association",
+    "category": "Sports"
+  },
+  {
+    "abbreviation": "MVP",
+    "options": [
+      "Major Victory Player",
+      "Maximum Victory Points",
+      "Most Valuable Player"
+    ],
+    "correct_answer": "Most Valuable Player",
+    "category": "Sports"
+  },
+  {
+    "abbreviation": "NBA",
+    "options": [
+      "North Basketball Association",
+      "National Basketball Association",
+      "National Ball Association"
+    ],
+    "correct_answer": "National Basketball Association",
+    "category": "Sports"
+  },
+  {
+    "abbreviation": "ATP",
+    "options": [
+      "Association of Tennis Professionals",
+      "Athletic Tournament Program",
+      "Advanced Tennis Play"
+    ],
+    "correct_answer": "Association of Tennis Professionals",
+    "category": "Sports"
+  },
+  {
+    "abbreviation": "NFL",
+    "options": [
+      "National Federation League",
+      "National Football League",
+      "National Field League"
+    ],
+    "correct_answer": "National Football League",
+    "category": "Sports"
+  },
+  {
+    "abbreviation": "DIY",
+    "options": ["Do It Yourself", "Design It Yourself", "Deal It Yourself"],
+    "correct_answer": "Do It Yourself",
+    "category": "Everyday"
+  },
+  {
+    "abbreviation": "ETA",
+    "options": [
+      "Estimated Time of Arrival",
+      "Expected Travel Arrival",
+      "Exact Time Arrival"
+    ],
+    "correct_answer": "Estimated Time of Arrival",
+    "category": "Everyday"
+  },
+  {
+    "abbreviation": "FAQ",
+    "options": [
+      "Frequently Asked Questions",
+      "Fast Answer Questions",
+      "Frequent Answer Queue"
+    ],
+    "correct_answer": "Frequently Asked Questions",
+    "category": "Everyday"
+  },
+  {
+    "abbreviation": "PIN",
+    "options": [
+      "Public Identity Number",
+      "Private Identity Number",
+      "Personal Identification Number"
+    ],
+    "correct_answer": "Personal Identification Number",
+    "category": "Everyday"
+  },
+  {
+    "abbreviation": "ASAP",
+    "options": [
+      "At Some Approaching Point",
+      "As Soon As Possible",
+      "After Some Added Preparation"
+    ],
+    "correct_answer": "As Soon As Possible",
+    "category": "Everyday"
+  }
+]

@@ -1,5 +1,6 @@
 export type RootStackParamList = {
   HomeScreen: undefined;
-  GameScreen: undefined;
+  GameScreen: { category: string };
   ResultScreen: { points: number };
+  CategoryScreen: { category: string };
 };

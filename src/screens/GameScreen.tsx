@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../navigation/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import abbreviations from "../data/abbreviations.json";
+import abbreviations_with_categories from "../data/abbreviations_with_categories.json";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type NavigationProp = NativeStackNavigationProp<

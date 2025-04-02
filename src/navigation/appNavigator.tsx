@@ -4,6 +4,7 @@ import { RootStackParamList } from "./types";
 import GameScreen from "../screens/GameScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ResultScreen from "../screens/ResultScreen";
+import CategoryScreen from "../screens/CategoryScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -14,6 +15,11 @@ const AppNavigator = () => {
         name="HomeScreen"
         options={{ title: "Välkommen" }}
         component={HomeScreen}
+      />
+      <Stack.Screen
+        name="CategoryScreen"
+        options={{ title: "Kategorier" }}
+        component={CategoryScreen}
       />
       <Stack.Screen
         name="GameScreen"
