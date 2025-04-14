@@ -1,23 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "../navigation/types";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  Dimensions,
+  ScrollView,
+} from "react-native";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
+import { RootStackParamList } from "../constants/types";
 import { SafeAreaView } from "react-native-safe-area-context";
-import abbreviations from "../data/abbreviations.json";
-import abbreviations_with_categories from "../data/abbreviations_with_categories.json";
+import abbreviations from "../data/abbreviations_with_categories.json";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { LinearGradient } from "expo-linear-gradient";
+import { GlobalStyles } from "../constants/styles";
+
+const { height, width } = Dimensions.get("window");
 
 type NavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "GameScreen"
 >;
 
+type GameScreenRouteProp = RouteProp<RootStackParamList, "GameScreen">;
+
 const GameScreen = () => {
   const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<GameScreenRouteProp>();
+  const { category } = route.params;
 
   const [currentWord, setCurrentWord] = useState("");
   const [options, setOptions] = useState<string[]>([]);
   const [points, setPoints] = useState<number>(0);
+  const [answeredQuestions, setAnsweredQuestions] = useState<Set<string>>(
+    new Set()
+  );
 
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
@@ -26,8 +44,23 @@ const GameScreen = () => {
   const [hasAnswered, setHasAnswered] = useState(false);
 
   const generateQuestion = () => {
-    const randomIndex = Math.floor(Math.random() * abbreviations.length);
-    const selected = abbreviations[randomIndex];
+    const categoryAbbreviations =
+      category === "all"
+        ? abbreviations
+        : abbreviations.filter((item) => item.category === category);
+
+    // Filter out already answered questions
+    const availableQuestions = categoryAbbreviations.filter(
+      (item) => !answeredQuestions.has(item.abbreviation)
+    );
+
+    if (availableQuestions.length === 0) {
+      navigation.navigate("ResultScreen", { points, category });
+      return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+    const selected = availableQuestions[randomIndex];
 
     const shuffleArray = (array: string[]) => {
       return [...array].sort(() => Math.random() - 0.5);
@@ -54,8 +87,11 @@ const GameScreen = () => {
       setHasAnswered(true);
     }
 
+    // Add current question to answered set
+    setAnsweredQuestions((prev) => new Set([...prev, currentWord]));
+
     if (guessLeft - 1 === 0) {
-      navigation.navigate("ResultScreen", { points });
+      navigation.navigate("ResultScreen", { points, category });
     }
   };
 
@@ -68,41 +104,59 @@ const GameScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <View style={styles.header}>
-          <Text style={styles.points}>Poäng: {points}</Text>
-          <Text style={styles.points}>Liv: {guessLeft}</Text>
+      <StatusBar barStyle="light-content" />
+      <View style={styles.content}>
+        <Text style={styles.categoryText}>{category}</Text>
+        <View style={styles.statusContainer}>
+          <View style={styles.statBox}>
+            <Text style={styles.statLable}>Points</Text>
+            <Text style={styles.statValue}>{points}</Text>
+          </View>
+          <View style={styles.statBox}>
+            <Text style={styles.statLable}>Lives</Text>
+            <Text style={styles.statValue}>{guessLeft}</Text>
+          </View>
         </View>
-        <View>
-          <Text style={styles.title}>Gissa förkorttningen?</Text>
-        </View>
+
         <View style={styles.wordCard}>
           <Text style={styles.currentWord}>{currentWord}</Text>
         </View>
-        {options.map((option, index) => (
-          <Pressable
-            key={index}
-            style={[
-              styles.optionButton,
-              showAnswer &&
-                option === correctAnswer && { backgroundColor: "lightgreen" },
-              showAnswer &&
-                option === selectedOption &&
-                option !== correctAnswer && { backgroundColor: "#FF0000" },
-            ]}
-            onPress={() => handleGuess(option)}
-            disabled={hasAnswered}
-          >
-            <Text style={styles.optionText}>{option}</Text>
-          </Pressable>
-        ))}
-        <View>
-          {hasAnswered && (
-            <Pressable style={styles.nextButton} onPress={handleNextQuestion}>
-              <Text style={styles.nextButtonText}>Nästa fråga</Text>
+
+        <ScrollView
+          style={styles.optionsScrollView}
+          contentContainerStyle={styles.optionsContainer}
+        >
+          {options.map((option, index) => (
+            <Pressable
+              key={index}
+              style={[
+                styles.optionButton,
+                showAnswer &&
+                  option === correctAnswer && {
+                    backgroundColor: "lightgreen",
+                  },
+                showAnswer &&
+                  option === selectedOption &&
+                  option !== correctAnswer && { backgroundColor: "#FF0000" },
+              ]}
+              onPress={() => handleGuess(option)}
+              disabled={hasAnswered}
+            >
+              <Text style={styles.optionText}>{option}</Text>
             </Pressable>
-          )}
-        </View>
+          ))}
+        </ScrollView>
+
+        {hasAnswered && (
+          <Pressable style={styles.nextButton} onPress={handleNextQuestion}>
+            <LinearGradient
+              colors={["#E6C229", "#F7D154"]}
+              style={styles.nextButtonGradient}
+            >
+              <Text style={styles.nextButtonText}>Next Question</Text>
+            </LinearGradient>
+          </Pressable>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -111,92 +165,106 @@ const GameScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#6883BA",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: GlobalStyles.colors.primary500,
   },
-  title: {
-    fontSize: 24,
-    color: "#ffffff",
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  feedbackText: {
-    color: "#FF0000",
+  categoryText: {
+    color: "#FFF",
     fontSize: 18,
-    marginVertical: 10,
-    textAlign: "center",
-  },
-  wordCard: {
-    padding: 80,
+    fontWeight: "500",
     marginBottom: 30,
-    backgroundColor: "#F9F9F9",
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-    elevation: 20,
   },
-  currentWord: {
+  content: {
+    flex: 1,
+    alignItems: "center",
+    paddingBottom: 30,
+  },
+  statusContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 20,
+    marginBottom: 16,
+  },
+  statBox: {
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    padding: 12,
+    borderRadius: 12,
+    minWidth: 100,
+    alignItems: "center",
+  },
+  statLable: {
+    color: "#ffffff",
+    fontSize: 14,
+    opacity: 0.8,
+  },
+  statValue: {
+    color: "#ffffff",
     fontSize: 24,
     fontWeight: "bold",
-    color: "#000",
-    letterSpacing: 3,
-    textAlign: "center",
+  },
+  wordCard: {
+    margin: 40,
+    width: "100%",
+    alignItems: "center",
+  },
+  currentWord: {
+    fontSize: 42,
+    fontWeight: "bold",
+    color: GlobalStyles.colors.primary50,
+    letterSpacing: 2,
+    borderWidth: 1,
+    borderColor: GlobalStyles.colors.primary50,
+    padding: 20,
+    borderRadius: 10,
+  },
+  optionsScrollView: {
+    flex: 1,
+    width: "100%",
+    maxHeight: height * 0.4,
+  },
+  optionsContainer: {
+    width: "100%",
+    gap: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 16,
   },
   optionButton: {
-    backgroundColor: "#ffffff",
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    marginVertical: 10,
-    borderRadius: 8,
-    alignItems: "center",
+    backgroundColor: "#FFF",
+    padding: 16,
+    borderRadius: 12,
+    width: "100%",
+    gap: 12,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
     elevation: 3,
   },
   optionText: {
     fontSize: 18,
     color: "#000",
-    fontWeight: "300",
+    fontWeight: "bold",
     textAlign: "center",
     padding: 10,
   },
-  header: {
-    marginBottom: 30,
-    paddingHorizontal: 20,
-    backgroundColor: "#6883BA",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-    elevation: 20,
-    borderRadius: 10,
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  points: {
-    fontSize: 20,
+  selectedOptionText: {
+    color: "#000",
     fontWeight: "bold",
-    color: "#E6C229",
-    padding: 10,
   },
   nextButton: {
-    backgroundColor: "#E6C229",
-    padding: 15,
-    borderRadius: 8,
-    marginTop: 20,
+    marginTop: 30,
+    width: "80%",
+    borderRadius: 12,
+    overflow: "hidden",
+  },
+  nextButtonGradient: {
+    padding: 16,
     alignItems: "center",
   },
   nextButtonText: {
+    color: "#000",
     fontSize: 18,
     fontWeight: "bold",
-    color: "#000",
-    textAlign: "center",
   },
 });
 

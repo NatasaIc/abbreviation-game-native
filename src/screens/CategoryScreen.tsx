@@ -9,11 +9,12 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../navigation/types";
+import { RootStackParamList } from "../constants/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import abbreviations_with_categories from "../data/abbreviations_with_categories.json";
+import { GlobalStyles } from "../constants/styles";
 
 type NavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -37,7 +38,10 @@ const CategoryScreen = () => {
   }, []);
 
   return (
-    <LinearGradient colors={["#6883BA", "#4A638F"]} style={styles.container}>
+    <LinearGradient
+      colors={[GlobalStyles.colors.primary500, GlobalStyles.colors.primary400]}
+      style={styles.container}
+    >
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.header}>
           <Text style={styles.title}>Choose Your Challenge</Text>
@@ -122,6 +126,7 @@ const getCategoryCount = (category: string) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 30,
   },
   safeArea: {
     flex: 1,

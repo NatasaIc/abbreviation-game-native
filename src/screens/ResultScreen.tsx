@@ -1,14 +1,12 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { RootStackParamList } from "../navigation/types";
+import { RootStackParamList } from "../constants/types";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { GlobalStyles } from "../constants/styles";
 
 type ResultScreenProp = RouteProp<RootStackParamList, "ResultScreen">;
-type NavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  "HomeScreen"
->;
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 type Props = {
   route: ResultScreenProp;
@@ -16,36 +14,38 @@ type Props = {
 
 const ResultScreen = ({ route }: Props) => {
   const navigation = useNavigation<NavigationProp>();
-  const { points } = route.params;
+  const { points, category } = route.params;
 
   const percentages = Math.round((points / 10) * 100);
 
   const performanceMessage = () => {
     if (points > 7) {
-      return "Du är legend!👑";
+      return "You are legend!👑";
     } else if (points >= 4) {
-      return "Bra jobbat!💪";
+      return "Good job!💪";
     } else {
-      return "Försök igen!😅";
+      return "Try again!😅";
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.pointsText}>Du fick {points} poäng!🎉</Text>
-      <Text style={styles.pointsText}>{percentages}% av maximala poängen!</Text>
+      <Text style={styles.pointsText}>You got {points} points!🎉</Text>
+      <Text style={styles.pointsText}>
+        {percentages}% of the maximum points!
+      </Text>
       <Text style={styles.pointsText}>{performanceMessage()}</Text>
       <Pressable
         style={styles.newGameButton}
-        onPress={() => navigation.navigate("GameScreen")}
+        onPress={() => navigation.navigate("GameScreen", { category })}
       >
-        <Text>Spela igen!</Text>
+        <Text>Play again!</Text>
       </Pressable>
       <Pressable
         style={styles.newGameButton}
-        onPress={() => navigation.navigate("HomeScreen")}
+        onPress={() => navigation.navigate("BottomTabsOverview")}
       >
-        <Text>Avsluta</Text>
+        <Text>Exit</Text>
       </Pressable>
     </SafeAreaView>
   );
@@ -54,7 +54,7 @@ const ResultScreen = ({ route }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#6883BA",
+    backgroundColor: GlobalStyles.colors.primary500,
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   newGameButton: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: GlobalStyles.colors.accent600,
     padding: 15,
     borderRadius: 10,
     width: "70%",
