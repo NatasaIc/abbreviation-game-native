@@ -2,7 +2,7 @@
 
 ## 📖 About
 
-Förkortningsspelet is an interactive quiz game designed to test and improve your knowledge of common abbreviations. Challenge yourself to guess the full meanings of various acronyms and abbreviations across different categories!
+Abbreviation Game is an interactive quiz game designed to test and improve your knowledge of common abbreviations. Challenge yourself to guess the full meanings of various acronyms and abbreviations across different categories!
 
 ## ✨ Features
 
