@@ -1,12 +1,4 @@
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  Dimensions,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../constants/types";
@@ -15,6 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import abbreviations_with_categories from "../data/abbreviations_with_categories.json";
 import { GlobalStyles } from "../constants/styles";
+import CategoryCard from "../components/CategoryCard";
 
 type NavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -56,48 +49,23 @@ const CategoryScreen = () => {
         >
           <View style={styles.bentoGrid}>
             {category.map((item) => (
-              <Pressable
-                style={styles.bentoItem}
+              <CategoryCard
                 key={item}
+                category={item}
+                count={getCategoryCount(item)}
                 onPress={() =>
                   navigation.navigate("GameScreen", { category: item })
                 }
-              >
-                <LinearGradient
-                  colors={["#E6C229", "#F7D154"]}
-                  style={styles.itemGradient}
-                >
-                  <View style={styles.itemContent}>
-                    <Text style={styles.categoryEmoji}>
-                      {getCategoryEmoji(item)}
-                    </Text>
-                    <Text style={styles.buttonText}>{item}</Text>
-                    <Text style={styles.itemCount}>
-                      {getCategoryCount(item)} terms
-                    </Text>
-                  </View>
-                </LinearGradient>
-              </Pressable>
+              ></CategoryCard>
             ))}
-            <Pressable
-              style={styles.bentoItem}
+            <CategoryCard
+              category="all"
+              count={abbreviations_with_categories.length}
               onPress={() =>
                 navigation.navigate("GameScreen", { category: "all" })
               }
-            >
-              <LinearGradient
-                colors={["#FF9B42", "#FFB067"]}
-                style={styles.itemGradient}
-              >
-                <View style={styles.itemContent}>
-                  <Text style={styles.categoryEmoji}>🌟</Text>
-                  <Text style={styles.buttonText}>All Categories</Text>
-                  <Text style={styles.itemCount}>
-                    {abbreviations_with_categories.length} terms
-                  </Text>
-                </View>
-              </LinearGradient>
-            </Pressable>
+              isAllCategories
+            ></CategoryCard>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -105,17 +73,6 @@ const CategoryScreen = () => {
   );
 };
 
-// Helper function to get emoji for categories
-const getCategoryEmoji = (category: string) => {
-  const emojiMap: { [Key: string]: string } = {
-    Medical: "⚕️",
-    Technology: "💻",
-    Business: "💼",
-    Science: "🔬",
-    Education: "📚",
-  };
-  return emojiMap[category] || "📋";
-};
 // Helper function to count items in category
 const getCategoryCount = (category: string) => {
   return abbreviations_with_categories.filter(
@@ -163,43 +120,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 12,
     padding: 12,
-  },
-  bentoItem: {
-    width: Dimensions.get("window").width * 0.38,
-    aspectRatio: 1,
-    borderRadius: 16,
-    overflow: "hidden",
-    elevation: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    margin: 4,
-  },
-  itemGradient: {
-    flex: 1,
-    padding: 12,
-  },
-  itemContent: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  categoryEmoji: {
-    fontSize: 32,
-    marginBottom: 8,
-  },
-  buttonText: {
-    color: "#000",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 4,
-  },
-  itemCount: {
-    fontSize: 12,
-    color: "#000",
-    opacity: 0.7,
   },
 });
 

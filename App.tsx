@@ -9,10 +9,14 @@ import HomeScreen from "./src/screens/HomeScreen";
 import CategoryScreen from "./src/screens/CategoryScreen";
 import GameScreen from "./src/screens/GameScreen";
 import ResultScreen from "./src/screens/ResultScreen";
-import { GlobalStyles } from "./src/constants/styles";
-import IconButton from "./src/UI/IconButton";
-import { Ionicons } from "@expo/vector-icons";
 import LeaderboardScreen from "./src/screens/LeaderboardScreen";
+import SettingsScreen from "./src/screens/SettingsScreen";
+import {
+  stackScreenOptions,
+  tabScreenOptions,
+  getTabBarIcon,
+} from "./src/navigation/config";
+import IconButton from "./src/UI/IconButton";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTabs = createBottomTabNavigator();
@@ -21,15 +25,7 @@ function BottomTabsOverview() {
   return (
     <BottomTabs.Navigator
       screenOptions={({ navigation }) => ({
-        headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
-        headerTintColor: "white",
-        tabBarStyle: {
-          backgroundColor: GlobalStyles.colors.primary500,
-          paddingTop: 10,
-          height: 90,
-        },
-        tabBarActiveTintColor: GlobalStyles.colors.accent500,
-        tabBarInactiveTintColor: "white",
+        ...tabScreenOptions,
         headerRight: ({ tintColor }) => (
           <IconButton
             icon="settings"
@@ -48,9 +44,7 @@ function BottomTabsOverview() {
         options={{
           title: "Play",
           tabBarLabel: "Play",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="game-controller" size={size} color={color} />
-          ),
+          tabBarIcon: getTabBarIcon("Play"),
         }}
       />
       <BottomTabs.Screen
@@ -59,9 +53,7 @@ function BottomTabsOverview() {
         options={{
           title: "Leaderboard",
           tabBarLabel: "Leaderboard",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="list" size={size} color={color} />
-          ),
+          tabBarIcon: getTabBarIcon("Leaderboard"),
         }}
       />
     </BottomTabs.Navigator>
@@ -73,20 +65,10 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
         <StatusBar style="auto" />
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
-            headerTintColor: "white",
-          }}
-        >
+        <Stack.Navigator screenOptions={stackScreenOptions}>
           <Stack.Screen
             name="BottomTabsOverview"
             component={BottomTabsOverview}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="HomeScreen"
-            component={HomeScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -106,6 +88,11 @@ export default function App() {
             name="ResultScreen"
             component={ResultScreen}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SettingsScreen"
+            component={SettingsScreen}
+            options={{ headerShown: true, title: "Settings" }}
           />
         </Stack.Navigator>
       </NavigationContainer>

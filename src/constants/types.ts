@@ -4,4 +4,5 @@ export type RootStackParamList = {
   CategoryScreen: { category: string };
   GameScreen: { category: string };
   ResultScreen: { points: number; category: string };
+  SettingsScreen: undefined;
 };
