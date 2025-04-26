@@ -37,8 +37,11 @@ function SettingsScreen() {
     const loadSettings = async () => {
       try {
         const savedSettings = await AsyncStorage.getItem(STORAGE_KEY);
+        console.log('Raw settings from AsyncStorage:', savedSettings);
         if (savedSettings) {
-          setSettings(JSON.parse(savedSettings));
+          const parsedSettings = JSON.parse(savedSettings);
+          console.log('Parsed settings in GameScreen:', parsedSettings);
+          setSettings(parsedSettings);
         }
       } catch (error) {
         console.log('Failed to load settings', error);
@@ -50,10 +53,18 @@ function SettingsScreen() {
   // Save settings to AsyncStorage whenever they change
   const saveSettings = async (updatedSettings: typeof settings) => {
     try {
+      console.log('Settings saved successfully:', updatedSettings);
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedSettings));
+      console.log('Settings saved successfully');
     } catch (error) {
       console.log('Faild to save settings', error);
     }
+  };
+
+  const updateSetting = (key: keyof typeof settings, value: any) => {
+    const newSettings = { ...settings, [key]: value };
+    setSettings(newSettings);
+    saveSettings(newSettings);
   };
 
   return (
@@ -68,7 +79,7 @@ function SettingsScreen() {
             <Text style={styles.settingsLabel}>Sound Effects</Text>
             <Switch
               value={settings.soundEffects}
-              onValueChange={value => setSettings({ ...settings, soundEffects: value })}
+              onValueChange={value => updateSetting('soundEffects', value)}
               trackColor={{
                 false: GlobalStyles.colors.primary50,
                 true: GlobalStyles.colors.accent600,
@@ -81,7 +92,7 @@ function SettingsScreen() {
             <Text style={styles.settingsLabel}>Vibration</Text>
             <Switch
               value={settings.vibration}
-              onValueChange={value => setSettings({ ...settings, vibration: value })}
+              onValueChange={value => updateSetting('vibration', value)}
               trackColor={{
                 false: GlobalStyles.colors.primary50,
                 true: GlobalStyles.colors.accent600,
@@ -94,7 +105,7 @@ function SettingsScreen() {
             <Text style={styles.settingsLabel}>Notification</Text>
             <Switch
               value={settings.notification}
-              onValueChange={value => setSettings({ ...settings, notification: value })}
+              onValueChange={value => updateSetting('notification', value)}
               trackColor={{
                 false: GlobalStyles.colors.primary50,
                 true: GlobalStyles.colors.accent600,
@@ -113,7 +124,7 @@ function SettingsScreen() {
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={settings.fontSize}
-                onValueChange={value => setSettings({ ...settings, fontSize: value })}
+                onValueChange={value => updateSetting('fontSize', value)}
                 style={styles.picker}
               >
                 <Picker.Item label="Small" value="Small" />
@@ -134,7 +145,7 @@ function SettingsScreen() {
             <TextInput
               style={styles.input}
               value={settings.username}
-              onChangeText={text => setSettings({ ...settings, username: text })}
+              onChangeText={text => updateSetting('username', text)}
               placeholder="Enter your username"
               placeholderTextColor={GlobalStyles.colors.gray300}
             />

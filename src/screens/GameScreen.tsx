@@ -8,6 +8,11 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
 import { GlobalStyles } from '../constants/styles';
 import { Vibration } from 'react-native';
+import { Audio } from 'expo-av';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import GameStatus from '../components/GameStatus';
+import OptionButton from '../components/OptionButton';
+import WordCard from '../components/WordCard';
 
 const { height, width } = Dimensions.get('window');
 
@@ -15,6 +20,17 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'GameScreen'
 
 type GameScreenRouteProp = RouteProp<RootStackParamList, 'GameScreen'>;
 
+/**
+ * GameScreen Component
+ *
+ * Main game screen where users play the abbreviation quiz game.
+ * Features:
+ * - Displays current abbreviation to guess
+ * - Shows multiple choice options
+ * - Tracks points and lives
+ * - Handles sound effects and vibration feedback
+ * - Manages game state and navigation
+ */
 const GameScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<GameScreenRouteProp>();
@@ -31,6 +47,39 @@ const GameScreen = () => {
   const [guessLeft, setGuessLeft] = useState(3);
   const [hasAnswered, setHasAnswered] = useState(false);
 
+  const [settings, setSettings] = useState({
+    soundEffects: true,
+    vibration: true,
+    fontSize: 'Medium',
+    notification: true,
+    username: '',
+  });
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const savedSettings = await AsyncStorage.getItem('userSettings');
+        console.log('Loaded settings in GameScreen:', savedSettings);
+        if (savedSettings) {
+          const parsedSettings = JSON.parse(savedSettings);
+          console.log('Parsed settings:', parsedSettings);
+          setSettings(parsedSettings);
+        }
+      } catch (error) {
+        console.log('Failed to load settings', error);
+      }
+    };
+    loadSettings();
+  }, []);
+
+  /**
+   * Generates a new question by:
+   * 1. Filtering questions by category
+   * 2. Removing already answered questions
+   * 3. Selecting a random question
+   *
+   * 4. Setting up the question state
+   */
   const generateQuestion = () => {
     const categoryAbbreviations =
       category === 'all' ? abbreviations : abbreviations.filter(item => item.category === category);
@@ -57,20 +106,34 @@ const GameScreen = () => {
     setCorrectAnswer(selected.correct_answer);
   };
 
+  // Generate first question when component mounts
   useEffect(() => {
     generateQuestion();
   }, []);
 
+  /**
+   * Handles user's guess by:
+   * 1. Checking if answer is correct
+   * 2. Updating points and lives
+   * 3. Playing appropriate sound effects
+   * 4. Triggering vibration for incorrect answers
+   * 5. Managing game state transitions
+   */
   const handleGuess = (option: string) => {
     setSelectedOption(option);
     if (option === correctAnswer) {
       setPoints(points + 1);
       setHasAnswered(true);
       setShowAnswer(true);
+      playSound('correct');
     } else {
       setShowAnswer(true);
       setGuessLeft(guessLeft - 1);
       setHasAnswered(true);
+      playSound('incorrect');
+      if (settings.vibration) {
+        Vibration.vibrate(100);
+      }
     }
 
     // Add current question to answered set
@@ -81,6 +144,11 @@ const GameScreen = () => {
     }
   };
 
+  /**
+   * Prepares the game for the next question by:
+   * 1. Resetting UI states
+   * 2. Generating a new question
+   */
   const handleNextQuestion = () => {
     setShowAnswer(false);
     setSelectedOption('');
@@ -88,51 +156,68 @@ const GameScreen = () => {
     setHasAnswered(false);
   };
 
+  /**
+   * Plays sound effects based on game events
+   * @param soundType - Type of sound to play ('correct' or 'incorrect')
+   */
+  const playSound = async (soundType: 'correct' | 'incorrect') => {
+    if (settings.soundEffects) {
+      try {
+        await Audio.setAudioModeAsync({
+          playsInSilentModeIOS: true, // Play even when device is in silent mode (iOS)
+          staysActiveInBackground: true, // Keep playing if app goes to background
+          shouldDuckAndroid: false, // Don't reduce volume when other sounds play (Android)
+        });
+
+        // Load the appropriate sound file based on the event type
+        const soundFile =
+          soundType === 'correct'
+            ? require('../assets/sounds/correct.mp3')
+            : require('../assets/sounds/incorrect.mp3');
+
+        // Create a new sound instance and prepare it for playback
+        const { sound: newSound } = await Audio.Sound.createAsync(soundFile, {
+          shouldPlay: true, // Start playing immediately after loading
+        });
+
+        await newSound.playAsync();
+
+        // Set up cleanup after sound finishes playing
+        newSound.setOnPlaybackStatusUpdate(async status => {
+          if (status.isLoaded && status.didJustFinish) {
+            // Unload the sound from memory to free up resources
+            await newSound.unloadAsync();
+          }
+        });
+      } catch (error) {
+        console.log('Error playing sound:', error);
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
       <View style={styles.content}>
         <Text style={styles.categoryText}>{category}</Text>
-        <View style={styles.statusContainer}>
-          <View style={styles.statBox}>
-            <Text style={styles.statLable}>Points</Text>
-            <Text style={styles.statValue}>{points}</Text>
-          </View>
-          <View style={styles.statBox}>
-            <Text style={styles.statLable}>Lives</Text>
-            <Text style={styles.statValue}>{guessLeft}</Text>
-          </View>
-        </View>
-
-        <View style={styles.wordCard}>
-          <Text style={styles.currentWord}>{currentWord}</Text>
-        </View>
-
+        <GameStatus points={points} lives={guessLeft} />
+        <WordCard word={currentWord} />
         <ScrollView
           style={styles.optionsScrollView}
           contentContainerStyle={styles.optionsContainer}
         >
           {options.map((option, index) => (
-            <Pressable
+            <OptionButton
               key={index}
-              style={[
-                styles.optionButton,
-                showAnswer &&
-                  option === correctAnswer && {
-                    backgroundColor: 'lightgreen',
-                  },
-                showAnswer &&
-                  option === selectedOption &&
-                  option !== correctAnswer && { backgroundColor: '#FF0000' },
-              ]}
+              option={option}
+              isCorrect={option === correctAnswer}
+              isSelected={option === selectedOption}
+              showAnswer={showAnswer}
               onPress={() => handleGuess(option)}
               disabled={hasAnswered}
-            >
-              <Text style={styles.optionText}>{option}</Text>
-            </Pressable>
+            />
           ))}
         </ScrollView>
-
         {hasAnswered && (
           <Pressable style={styles.nextButton} onPress={handleNextQuestion}>
             <LinearGradient colors={['#E6C229', '#F7D154']} style={styles.nextButtonGradient}>
@@ -161,44 +246,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 30,
   },
-  statusContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 20,
-    marginBottom: 16,
-  },
-  statBox: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    padding: 12,
-    borderRadius: 12,
-    minWidth: 100,
-    alignItems: 'center',
-  },
-  statLable: {
-    color: '#ffffff',
-    fontSize: 14,
-    opacity: 0.8,
-  },
-  statValue: {
-    color: '#ffffff',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  wordCard: {
-    margin: 40,
-    width: '100%',
-    alignItems: 'center',
-  },
-  currentWord: {
-    fontSize: 42,
-    fontWeight: 'bold',
-    color: GlobalStyles.colors.primary50,
-    letterSpacing: 2,
-    borderWidth: 1,
-    borderColor: GlobalStyles.colors.primary50,
-    padding: 20,
-    borderRadius: 10,
-  },
   optionsScrollView: {
     flex: 1,
     width: '100%',
@@ -210,29 +257,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 16,
-  },
-  optionButton: {
-    backgroundColor: '#FFF',
-    padding: 16,
-    borderRadius: 12,
-    width: '100%',
-    gap: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  optionText: {
-    fontSize: 18,
-    color: '#000',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    padding: 10,
-  },
-  selectedOptionText: {
-    color: '#000',
-    fontWeight: 'bold',
   },
   nextButton: {
     marginTop: 30,
