@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "abbreviationGame",
-    "slug": "abbreviationGame",
+    "name": "Abbreviation Game",
+    "slug": "abbreviation-game",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
