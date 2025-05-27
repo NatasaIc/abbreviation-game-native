@@ -10,14 +10,124 @@
     "category": "Technology"
   },
   {
-    "abbreviation": "CSS",
+    "abbreviation": "URL",
+    "options": ["Uniform Resource Locator", "Universal Reference Link", "User Registered Link"],
+    "correct_answer": "Uniform Resource Locator",
+    "category": "Technology"
+  },
+  {
+    "abbreviation": "AI",
+    "options": ["Artificial Intelligence", "Automated Interface", "Advanced Input"],
+    "correct_answer": "Artificial Intelligence",
+    "category": "Technology"
+  },
+  {
+    "abbreviation": "LAN",
+    "options": ["Local Area Network", "Logical Access Node", "Link Access Network"],
+    "correct_answer": "Local Area Network",
+    "category": "Technology"
+  },
+  {
+    "abbreviation": "SSD",
+    "options": ["Solid State Drive", "Secure Storage Device", "Software System Data"],
+    "correct_answer": "Solid State Drive",
+    "category": "Technology"
+  },
+  {
+    "abbreviation": "API",
     "options": [
-      "Cascading Style Sheets",
-      "Computer System Security",
-      "Central Server System"
+      "Application Programming Interface",
+      "Advanced Protocol Integration",
+      "Automated Process Index"
     ],
+    "correct_answer": "Application Programming Interface",
+    "category": "Technology"
+  },
+  {
+    "abbreviation": "CPU",
+    "options": ["Central Processing Unit", "Computer Power Unit", "Control Processing Utility"],
+    "correct_answer": "Central Processing Unit",
+    "category": "Technology"
+  },
+  {
+    "abbreviation": "RAM",
+    "options": ["Random Access Memory", "Read After Memory", "Remote Access Mode"],
+    "correct_answer": "Random Access Memory",
+    "category": "Technology"
+  },
+  {
+    "abbreviation": "USB",
+    "options": ["Universal Serial Bus", "User System Backup", "Unified Software Base"],
+    "correct_answer": "Universal Serial Bus",
+    "category": "Technology"
+  },
+  {
+    "abbreviation": "VPN",
+    "options": ["Virtual Private Network", "Verified Proxy Network", "Virtual Public Node"],
+    "correct_answer": "Virtual Private Network",
+    "category": "Technology"
+  },
+  {
+    "abbreviation": "IoT",
+    "options": ["Internet of Things", "Information of Technology", "Input over Transmission"],
+    "correct_answer": "Internet of Things",
+    "category": "Technology"
+  },
+  {
+    "abbreviation": "CSS",
+    "options": ["Cascading Style Sheets", "Computer System Security", "Central Server System"],
     "correct_answer": "Cascading Style Sheets",
     "category": "Technology"
+  },
+  {
+    "abbreviation": "ECG",
+    "options": ["Electrocardiogram", "External Cardio Graph", "Essential Circulation Guide"],
+    "correct_answer": "Electrocardiogram",
+    "category": "Medicine"
+  },
+  {
+    "abbreviation": "BMI",
+    "options": ["Body Mass Index", "Basic Medical Information", "Body Measure Indicator"],
+    "correct_answer": "Body Mass Index",
+    "category": "Medicine"
+  },
+  {
+    "abbreviation": "OTC",
+    "options": ["Over The Counter", "Only Taken Carefully", "Official Treatment Code"],
+    "correct_answer": "Over The Counter",
+    "category": "Medicine"
+  },
+  {
+    "abbreviation": "ADHD",
+    "options": [
+      "Attention Deficit Hyperactivity Disorder",
+      "Active Delayed Hormone Disorder",
+      "All Day High Disorder"
+    ],
+    "correct_answer": "Attention Deficit Hyperactivity Disorder",
+    "category": "Medicine"
+  },
+  {
+    "abbreviation": "TB",
+    "options": ["Tuberculosis", "Tissue Blockage", "Total Blood"],
+    "correct_answer": "Tuberculosis",
+    "category": "Medicine"
+  },
+  {
+    "abbreviation": "ICD",
+    "options": [
+      "International Classification of Diseases",
+      "Intensive Care Diagnosis",
+      "Immune Condition Disorder"
+    ],
+    "correct_answer": "International Classification of Diseases",
+    "category": "Medicine"
+  },
+  {
+    "abbreviation": "ER",
+    "options": ["Emergency Room", "Extended Recovery", "Emergency Response"],
+    "correct_answer": "Emergency Room",
+    "category": "Medicine"
   },
   {
     "abbreviation": "BP",
@@ -27,21 +137,13 @@
   },
   {
     "abbreviation": "MRI",
-    "options": [
-      "Muscle Reaction Imaging",
-      "Magnetic Resonance Imaging",
-      "Medical Radiology Index"
-    ],
+    "options": ["Muscle Reaction Imaging", "Magnetic Resonance Imaging", "Medical Radiology Index"],
     "correct_answer": "Magnetic Resonance Imaging",
     "category": "Medicine"
   },
   {
     "abbreviation": "ICU",
-    "options": [
-      "Internal Care Unit",
-      "Infection Control Unit",
-      "Intensive Care Unit"
-    ],
+    "options": ["Internal Care Unit", "Infection Control Unit", "Intensive Care Unit"],
     "correct_answer": "Intensive Care Unit",
     "category": "Medicine"
   },
@@ -57,21 +159,67 @@
   },
   {
     "abbreviation": "HIV",
-    "options": [
-      "High Immunity Value",
-      "Human Immunodeficiency Virus",
-      "Health Infection Virus"
-    ],
+    "options": ["High Immunity Value", "Human Immunodeficiency Virus", "Health Infection Virus"],
     "correct_answer": "Human Immunodeficiency Virus",
     "category": "Medicine"
   },
   {
-    "abbreviation": "ROI",
+    "abbreviation": "R&D",
+    "options": ["Research and Development", "Return and Debt", "Revenue and Distribution"],
+    "correct_answer": "Research and Development",
+    "category": "Business"
+  },
+  {
+    "abbreviation": "IPO",
+    "options": ["Initial Public Offering", "Investment Portfolio Order", "Internal Profit Option"],
+    "correct_answer": "Initial Public Offering",
+    "category": "Business"
+  },
+  {
+    "abbreviation": "B2C",
+    "options": ["Business to Consumer", "Buy to Credit", "Brand to Consumer"],
+    "correct_answer": "Business to Consumer",
+    "category": "Business"
+  },
+  {
+    "abbreviation": "CSR",
     "options": [
-      "Rate Of Increase",
-      "Revenue Over Income",
-      "Return On Investment"
+      "Corporate Social Responsibility",
+      "Customer Service Request",
+      "Company Sales Report"
     ],
+    "correct_answer": "Corporate Social Responsibility",
+    "category": "Business"
+  },
+  {
+    "abbreviation": "P&L",
+    "options": ["Profit and Loss", "Planning and Logistics", "Purchase and Lease"],
+    "correct_answer": "Profit and Loss",
+    "category": "Business"
+  },
+  {
+    "abbreviation": "SME",
+    "options": [
+      "Small and Medium Enterprises",
+      "Sales Management Executive",
+      "Startup Market Entity"
+    ],
+    "correct_answer": "Small and Medium Enterprises",
+    "category": "Business"
+  },
+  {
+    "abbreviation": "CRM",
+    "options": [
+      "Customer Relationship Management",
+      "Credit Risk Management",
+      "Consumer Revenue Method"
+    ],
+    "correct_answer": "Customer Relationship Management",
+    "category": "Business"
+  },
+  {
+    "abbreviation": "ROI",
+    "options": ["Rate Of Increase", "Revenue Over Income", "Return On Investment"],
     "correct_answer": "Return On Investment",
     "category": "Business"
   },
@@ -99,11 +247,7 @@
   },
   {
     "abbreviation": "KPI",
-    "options": [
-      "Key Project Index",
-      "Key Performance Indicator",
-      "Knowledge Process Insight"
-    ],
+    "options": ["Key Project Index", "Key Performance Indicator", "Knowledge Process Insight"],
     "correct_answer": "Key Performance Indicator",
     "category": "Business"
   },
@@ -119,12 +263,62 @@
   },
   {
     "abbreviation": "MVP",
-    "options": [
-      "Major Victory Player",
-      "Maximum Victory Points",
-      "Most Valuable Player"
-    ],
+    "options": ["Major Victory Player", "Maximum Victory Points", "Most Valuable Player"],
     "correct_answer": "Most Valuable Player",
+    "category": "Sports"
+  },
+  {
+    "abbreviation": "UFC",
+    "options": [
+      "Ultimate Fighting Championship",
+      "United Football Confederation",
+      "Universal Fight Club"
+    ],
+    "correct_answer": "Ultimate Fighting Championship",
+    "category": "Sports"
+  },
+  {
+    "abbreviation": "WWE",
+    "options": [
+      "World Wrestling Entertainment",
+      "Worldwide Wrestling Events",
+      "World Wide Entertainment"
+    ],
+    "correct_answer": "World Wrestling Entertainment",
+    "category": "Sports"
+  },
+  {
+    "abbreviation": "F1",
+    "options": ["Formula One", "Fastest Lap One", "First Championship"],
+    "correct_answer": "Formula One",
+    "category": "Sports"
+  },
+  {
+    "abbreviation": "IOC",
+    "options": [
+      "International Olympic Committee",
+      "International Outdoor Championship",
+      "Independent Olympic Council"
+    ],
+    "correct_answer": "International Olympic Committee",
+    "category": "Sports"
+  },
+  {
+    "abbreviation": "NHL",
+    "options": ["National Hockey League", "North Hemisphere League", "New Hockey Legends"],
+    "correct_answer": "National Hockey League",
+    "category": "Sports"
+  },
+  {
+    "abbreviation": "VAR",
+    "options": ["Video Assistant Referee", "Verified Athletic Ruling", "Visual Analysis Replay"],
+    "correct_answer": "Video Assistant Referee",
+    "category": "Sports"
+  },
+  {
+    "abbreviation": "MLS",
+    "options": ["Major League Soccer", "Maximum League System", "Modern League Sports"],
+    "correct_answer": "Major League Soccer",
     "category": "Sports"
   },
   {
@@ -149,11 +343,7 @@
   },
   {
     "abbreviation": "NFL",
-    "options": [
-      "National Federation League",
-      "National Football League",
-      "National Field League"
-    ],
+    "options": ["National Federation League", "National Football League", "National Field League"],
     "correct_answer": "National Football League",
     "category": "Sports"
   },
@@ -165,21 +355,13 @@
   },
   {
     "abbreviation": "ETA",
-    "options": [
-      "Estimated Time of Arrival",
-      "Expected Travel Arrival",
-      "Exact Time Arrival"
-    ],
+    "options": ["Estimated Time of Arrival", "Expected Travel Arrival", "Exact Time Arrival"],
     "correct_answer": "Estimated Time of Arrival",
     "category": "Everyday"
   },
   {
     "abbreviation": "FAQ",
-    "options": [
-      "Frequently Asked Questions",
-      "Fast Answer Questions",
-      "Frequent Answer Queue"
-    ],
+    "options": ["Frequently Asked Questions", "Fast Answer Questions", "Frequent Answer Queue"],
     "correct_answer": "Frequently Asked Questions",
     "category": "Everyday"
   },
@@ -195,12 +377,54 @@
   },
   {
     "abbreviation": "ASAP",
-    "options": [
-      "At Some Approaching Point",
-      "As Soon As Possible",
-      "After Some Added Preparation"
-    ],
+    "options": ["At Some Approaching Point", "As Soon As Possible", "After Some Added Preparation"],
     "correct_answer": "As Soon As Possible",
+    "category": "Everyday"
+  },
+  {
+    "abbreviation": "RSVP",
+    "options": [
+      "Répondez S'il Vous Plaît",
+      "Respond Soon Very Please",
+      "Request Special Visit Please"
+    ],
+    "correct_answer": "Répondez S'il Vous Plaît",
+    "category": "Everyday"
+  },
+  {
+    "abbreviation": "TBA",
+    "options": ["To Be Announced", "Time Before Action", "To Be Arranged"],
+    "correct_answer": "To Be Announced",
+    "category": "Everyday"
+  },
+  {
+    "abbreviation": "Wi-Fi",
+    "options": ["Wireless Fidelity", "Wired Function Interface", "Wide Frequency Internet"],
+    "correct_answer": "Wireless Fidelity",
+    "category": "Everyday"
+  },
+  {
+    "abbreviation": "DOB",
+    "options": ["Date of Birth", "Document of Belonging", "Day of Beginning"],
+    "correct_answer": "Date of Birth",
+    "category": "Everyday"
+  },
+  {
+    "abbreviation": "ID",
+    "options": ["Identification", "Individual Detail", "Identity Document"],
+    "correct_answer": "Identification",
+    "category": "Everyday"
+  },
+  {
+    "abbreviation": "PS",
+    "options": ["Post Script", "Personal Statement", "Public Signature"],
+    "correct_answer": "Post Script",
+    "category": "Everyday"
+  },
+  {
+    "abbreviation": "AKA",
+    "options": ["Also Known As", "All Known Abbreviations", "Alias Knowledge Area"],
+    "correct_answer": "Also Known As",
     "category": "Everyday"
   }
 ]

@@ -11,13 +11,9 @@ const STORAGE_KEY = 'userSettings';
 /**
  * SettingsScreen Component
  *
- * A screen that allows users to configure various app settings including:
+ * A screen that allows users to configure app settings:
  * - Sound effects toggle
  * - Vibration toggle
- * - Notification preferences
- * - Font size selection
- * - Username input
- *
  * Settings are persisted using AsyncStorage
  */
 function SettingsScreen() {
@@ -27,25 +23,18 @@ function SettingsScreen() {
   const [settings, setSettings] = useState({
     soundEffects: true,
     vibration: true,
-    fontSize: 'Medium',
-    notification: true,
-    username: '',
   });
 
   // Load saved settings when component mounts
   useEffect(() => {
     const loadSettings = async () => {
       try {
-        const savedSettings = await AsyncStorage.getItem(STORAGE_KEY);
-        console.log('Raw settings from AsyncStorage:', savedSettings);
+        const savedSettings = await AsyncStorage.getItem('userSettings');
         if (savedSettings) {
           const parsedSettings = JSON.parse(savedSettings);
-          console.log('Parsed settings in GameScreen:', parsedSettings);
           setSettings(parsedSettings);
         }
-      } catch (error) {
-        console.log('Failed to load settings', error);
-      }
+      } catch (error) {}
     };
     loadSettings();
   }, []);
@@ -53,12 +42,9 @@ function SettingsScreen() {
   // Save settings to AsyncStorage whenever they change
   const saveSettings = async (updatedSettings: typeof settings) => {
     try {
-      console.log('Settings saved successfully:', updatedSettings);
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedSettings));
-      console.log('Settings saved successfully');
-    } catch (error) {
-      console.log('Faild to save settings', error);
-    }
+      await AsyncStorage.setItem('userSettings', JSON.stringify(updatedSettings));
+      setSettings(updatedSettings);
+    } catch (error) {}
   };
 
   const updateSetting = (key: keyof typeof settings, value: any) => {
@@ -99,64 +85,12 @@ function SettingsScreen() {
               }}
             />
           </View>
-
-          {/* Notification Toggle */}
-          <View style={styles.settingItem}>
-            <Text style={styles.settingsLabel}>Notification</Text>
-            <Switch
-              value={settings.notification}
-              onValueChange={value => updateSetting('notification', value)}
-              trackColor={{
-                false: GlobalStyles.colors.primary50,
-                true: GlobalStyles.colors.accent600,
-              }}
-            />
-          </View>
-        </View>
-
-        {/* Appearance Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Appearance</Text>
-
-          {/* Font Size Picker */}
-          <View style={styles.settingItem}>
-            <Text style={styles.settingsLabel}>Font Size</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={settings.fontSize}
-                onValueChange={value => updateSetting('fontSize', value)}
-                style={styles.picker}
-              >
-                <Picker.Item label="Small" value="Small" />
-                <Picker.Item label="Medium" value="Medium" />
-                <Picker.Item label="Large" value="Large" />
-              </Picker>
-            </View>
-          </View>
-        </View>
-
-        {/* Profile Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Profile</Text>
-
-          {/* Username Input */}
-          <View style={styles.settingItem}>
-            <Text style={styles.settingsLabel}>Username</Text>
-            <TextInput
-              style={styles.input}
-              value={settings.username}
-              onChangeText={text => updateSetting('username', text)}
-              placeholder="Enter your username"
-              placeholderTextColor={GlobalStyles.colors.gray300}
-            />
-          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-// Styles for the SettingsScreen component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -190,21 +124,6 @@ const styles = StyleSheet.create({
   settingsLabel: {
     fontSize: 16,
     color: GlobalStyles.colors.text500,
-  },
-  pickerContainer: {
-    width: 150,
-    backgroundColor: GlobalStyles.colors.gray200,
-    borderRadius: 8,
-  },
-  picker: {
-    color: GlobalStyles.colors.text500,
-  },
-  input: {
-    backgroundColor: GlobalStyles.colors.primary400,
-    padding: 12,
-    borderRadius: 8,
-    color: GlobalStyles.colors.text500,
-    width: 200,
   },
 });
 

@@ -44,7 +44,7 @@ const GameScreen = () => {
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
   const [showAnswer, setShowAnswer] = useState(false);
-  const [guessLeft, setGuessLeft] = useState(3);
+  const [guessLeft, setGuessLeft] = useState(6);
   const [hasAnswered, setHasAnswered] = useState(false);
 
   const [settings, setSettings] = useState({
@@ -59,14 +59,12 @@ const GameScreen = () => {
     const loadSettings = async () => {
       try {
         const savedSettings = await AsyncStorage.getItem('userSettings');
-        console.log('Loaded settings in GameScreen:', savedSettings);
         if (savedSettings) {
           const parsedSettings = JSON.parse(savedSettings);
-          console.log('Parsed settings:', parsedSettings);
           setSettings(parsedSettings);
         }
       } catch (error) {
-        console.log('Failed to load settings', error);
+        // Handle error silently
       }
     };
     loadSettings();
@@ -158,41 +156,30 @@ const GameScreen = () => {
 
   /**
    * Plays sound effects based on game events
-   * @param soundType - Type of sound to play ('correct' or 'incorrect')
+   * @param type - Type of sound to play ('correct' or 'incorrect')
    */
-  const playSound = async (soundType: 'correct' | 'incorrect') => {
-    if (settings.soundEffects) {
-      try {
-        await Audio.setAudioModeAsync({
-          playsInSilentModeIOS: true, // Play even when device is in silent mode (iOS)
-          staysActiveInBackground: true, // Keep playing if app goes to background
-          shouldDuckAndroid: false, // Don't reduce volume when other sounds play (Android)
-        });
+  const playSound = async (type: 'correct' | 'incorrect') => {
+    if (!settings.soundEffects) return;
 
-        // Load the appropriate sound file based on the event type
-        const soundFile =
-          soundType === 'correct'
-            ? require('../assets/sounds/correct.mp3')
-            : require('../assets/sounds/incorrect.mp3');
+    try {
+      const soundFile =
+        type === 'correct'
+          ? require('../assets/sounds/correct.mp3')
+          : require('../assets/sounds/incorrect.mp3');
 
-        // Create a new sound instance and prepare it for playback
-        const { sound: newSound } = await Audio.Sound.createAsync(soundFile, {
-          shouldPlay: true, // Start playing immediately after loading
-        });
+      await Audio.setAudioModeAsync({
+        playsInSilentModeIOS: true,
+      });
 
-        await newSound.playAsync();
+      const { sound } = await Audio.Sound.createAsync(soundFile);
+      await sound.playAsync();
 
-        // Set up cleanup after sound finishes playing
-        newSound.setOnPlaybackStatusUpdate(async status => {
-          if (status.isLoaded && status.didJustFinish) {
-            // Unload the sound from memory to free up resources
-            await newSound.unloadAsync();
-          }
-        });
-      } catch (error) {
-        console.log('Error playing sound:', error);
-      }
-    }
+      sound.setOnPlaybackStatusUpdate(async status => {
+        if (status.isLoaded && status.didJustFinish) {
+          await sound.unloadAsync();
+        }
+      });
+    } catch (error) {}
   };
 
   return (

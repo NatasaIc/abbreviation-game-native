@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     borderWidth: 1,
     borderColor: GlobalStyles.colors.primary50,
-    padding: 20,
+    padding: 30,
     borderRadius: 10,
   },
 });
