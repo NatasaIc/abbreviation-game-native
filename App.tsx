@@ -20,7 +20,7 @@ function Navigation() {
       screenOptions={({ navigation }) => ({
         headerStyle: {
           backgroundColor: GlobalStyles.colors.primary700,
-          height: 200,
+          shadowColor: 'transparent',
         },
         headerTintColor: GlobalStyles.colors.accent500,
 
@@ -34,6 +34,9 @@ function Navigation() {
             }}
           />
         ),
+        headerRightContainerStyle: {
+          paddingRight: 20,
+        },
       })}
     >
       <Stack.Screen

@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   section: {
     marginHorizontal: 16,
-    marginVertical: 5,
+    marginVertical: 16,
     backgroundColor: GlobalStyles.colors.primary400,
     borderRadius: 16,
     padding: 16,

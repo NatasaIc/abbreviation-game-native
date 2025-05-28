@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../constants/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { GlobalStyles } from '../constants/styles';
+import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ResultScreenProp = RouteProp<RootStackParamList, 'ResultScreen'>;
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -15,6 +17,7 @@ type Props = {
 const ResultScreen = ({ route }: Props) => {
   const navigation = useNavigation<NavigationProp>();
   const { points, category } = route.params;
+  const [isNewHighScore, setIsNewHighScore] = useState(false);
 
   const percentages = Math.round((points / 10) * 100);
 
@@ -28,14 +31,34 @@ const ResultScreen = ({ route }: Props) => {
     }
   };
 
+  const saveHighScore = async () => {
+    try {
+      const key = `highscore_${category}`;
+      const storedScore = await AsyncStorage.getItem(key);
+      const previusScore = storedScore ? parseInt(storedScore) : 0;
+
+      if (points > previusScore) {
+        await AsyncStorage.setItem(key, points.toString());
+        setIsNewHighScore(true);
+      }
+    } catch (error) {
+      console.log('Error saving high score:', error);
+    }
+  };
+
+  useEffect(() => {
+    saveHighScore();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
+      {isNewHighScore && <Text style={styles.pointsText}>🎯 New High Score!</Text>}
       <Text style={styles.pointsText}>You got {points} points!🎉</Text>
       <Text style={styles.pointsText}>{percentages}% of the maximum points!</Text>
       <Text style={styles.pointsText}>{performanceMessage()}</Text>
       <Pressable
         style={styles.newGameButton}
-        onPress={() => navigation.navigate('GameScreen', { category })}
+        onPress={() => navigation.navigate('GameScreen', { category, restart: true })}
       >
         <Text style={styles.newGameButtonText}>Play again!</Text>
       </Pressable>
