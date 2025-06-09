@@ -1,5 +1,5 @@
 import { Modal, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
-import useGameLogic from '../hooks/useGameLogic';
+import { GlobalStyles } from '../constants/styles';
 
 interface GameOverModalProps {
   visible: boolean;
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: GlobalStyles.colors.primary500,
     padding: 30,
     borderRadius: 16,
     alignItems: 'center',
@@ -52,6 +52,6 @@ const styles = StyleSheet.create({
 
   modalSubtitle: {
     fontSize: 16,
-    color: '#333',
+    color: GlobalStyles.colors.text500,
   },
 });

@@ -16,18 +16,18 @@ const WordCard: React.FC<WordCardProps> = ({ word }) => {
 const styles = StyleSheet.create({
   wordCard: {
     margin: 40,
-    width: '100%',
+    width: '60%',
     alignItems: 'center',
+    borderWidth: 0.2,
+    borderColor: GlobalStyles.colors.primary50,
+    padding: 30,
+    borderRadius: 10,
   },
   currentWord: {
     fontSize: 42,
     fontWeight: 'bold',
     color: GlobalStyles.colors.primary50,
     letterSpacing: 2,
-    borderWidth: 1,
-    borderColor: GlobalStyles.colors.primary50,
-    padding: 30,
-    borderRadius: 10,
   },
 });
 

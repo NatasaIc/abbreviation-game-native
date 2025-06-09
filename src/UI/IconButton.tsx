@@ -23,7 +23,7 @@ export default IconButton;
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    borderRadius: 20,
+    borderRadius: 10,
   },
   pressed: {
     opacity: 0.75,

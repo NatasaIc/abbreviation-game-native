@@ -1,10 +1,10 @@
-import { Pressable, StyleSheet, Text, View, StatusBar, Dimensions } from 'react-native';
+import { Pressable, StyleSheet, Text, View, StatusBar, Dimensions, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../constants/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 import { GlobalStyles } from '../constants/styles';
+import BouncingButton from '../components/BouncingButton';
 
 const { height, width } = Dimensions.get('window');
 
@@ -23,18 +23,12 @@ const HomeScreen = () => {
           <Text style={styles.subtitle}>Test your knowledge of acronyms and abbreviations!</Text>
         </View>
 
-        <View style={styles.buttonsContainer}>
-          <Pressable
-            style={styles.button}
+        <View>
+          <BouncingButton
             onPress={() => navigation.navigate('CategoryScreen', { category: 'all' })}
           >
-            <LinearGradient
-              colors={[GlobalStyles.colors.accent500, GlobalStyles.colors.accent500]}
-              style={styles.buttonGradient}
-            >
-              <Text style={styles.buttonText}>Start Game</Text>
-            </LinearGradient>
-          </Pressable>
+            Start Game
+          </BouncingButton>
         </View>
       </SafeAreaView>
     </SafeAreaView>
@@ -47,7 +41,7 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.primary500,
   },
   content: {
-    flex: 1,
+    marginTop: height * 0.1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
@@ -57,7 +51,7 @@ const styles = StyleSheet.create({
     marginTop: height * 0.1,
   },
   title: {
-    fontSize: 42,
+    fontSize: 48,
     fontWeight: 'bold',
     color: '#FFF',
     textAlign: 'center',
@@ -72,32 +66,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     opacity: 0.9,
     maxWidth: width * 0.8,
-    lineHeight: 24,
-    marginBottom: height * 0.05,
-  },
-  buttonsContainer: {
-    width: '55%',
-    marginBottom: height * 0.1,
-  },
-  button: {
-    width: '100%',
-    borderRadius: 16,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 10,
-  },
-  buttonGradient: {
-    paddingVertical: 18,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#000',
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    lineHeight: 28,
+    marginBottom: height * 0.08,
   },
 });
 export default HomeScreen;

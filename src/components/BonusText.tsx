@@ -1,5 +1,4 @@
-import { useRef, useState } from 'react';
-import { Animated, Easing, StyleSheet } from 'react-native';
+import { Animated, StyleSheet } from 'react-native';
 
 interface BonusTextProps {
   opacity: Animated.Value;

@@ -1,8 +1,16 @@
+/**
+ * Main App Component
+ * Sets up the navigation structure and global providers
+ */
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
+import { Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from '@react-navigation/native-stack';
 import { RootStackParamList } from './src/constants/types';
 import HomeScreen from './src/screens/HomeScreen';
 import CategoryScreen from './src/screens/CategoryScreen';
@@ -11,32 +19,41 @@ import ResultScreen from './src/screens/ResultScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import IconButton from './src/UI/IconButton';
 import { GlobalStyles } from './src/constants/styles';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+/**
+ * Navigation Component
+ * Defines the navigation stack and screen configurations
+ */
 function Navigation() {
   return (
     <Stack.Navigator
-      screenOptions={({ navigation }) => ({
+      screenOptions={({
+        navigation,
+      }: {
+        navigation: NativeStackNavigationProp<RootStackParamList>;
+      }) => ({
         headerStyle: {
           backgroundColor: GlobalStyles.colors.primary700,
           shadowColor: 'transparent',
+          elevation: 0,
         },
         headerTintColor: GlobalStyles.colors.accent500,
-
         headerRight: () => (
           <IconButton
             icon="settings"
-            size={20}
+            size={24}
             color={GlobalStyles.colors.accent500}
             onPress={() => {
               navigation.navigate('SettingsScreen');
             }}
+            style={{
+              marginRight: Platform.OS === 'android' ? 16 : 0,
+            }}
           />
         ),
-        headerRightContainerStyle: {
-          paddingRight: 20,
-        },
       })}
     >
       <Stack.Screen
@@ -44,7 +61,7 @@ function Navigation() {
         component={HomeScreen}
         options={{
           headerShown: true,
-          title: 'Home',
+          title: 'Abbreviation Game',
         }}
       />
       <Stack.Screen
@@ -55,10 +72,14 @@ function Navigation() {
       <Stack.Screen
         name="GameScreen"
         component={GameScreen}
-        options={{
-          headerShown: true,
-          title: 'Game',
-        }}
+        options={({
+          navigation,
+        }: {
+          navigation: NativeStackNavigationProp<RootStackParamList>;
+        }) => ({
+          headerShown: false,
+          headerBackVisible: false,
+        })}
       />
       <Stack.Screen name="ResultScreen" component={ResultScreen} options={{ headerShown: false }} />
       <Stack.Screen
@@ -70,13 +91,19 @@ function Navigation() {
   );
 }
 
+/**
+ * Root App Component
+ * Wraps the app with necessary providers
+ */
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer>
-        <StatusBar style="auto" />
-        <Navigation />
-      </NavigationContainer>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <StatusBar style="light" />
+          <Navigation />
+        </NavigationContainer>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }

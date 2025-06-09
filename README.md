@@ -12,8 +12,6 @@ Abbreviation Game is an interactive quiz game designed to test and improve your 
   - Sound effects
   - Vibration feedback
   - Font size adjustment
-  - Notification preferences
-  - Username customization
 - 📱 Responsive design for mobile devices
 - 💾 Persistent settings using AsyncStorage
 

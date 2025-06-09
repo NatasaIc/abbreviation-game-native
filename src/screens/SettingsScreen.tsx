@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, ScrollView, TextInput, StyleSheet } from 'react-native';
 import { Switch } from 'react-native-gesture-handler';
-import { Picker } from '@react-native-picker/picker';
+
 import { GlobalStyles } from '../constants/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -65,7 +65,7 @@ function SettingsScreen() {
             <Text style={styles.settingsLabel}>Sound Effects</Text>
             <Switch
               value={settings.soundEffects}
-              onValueChange={value => updateSetting('soundEffects', value)}
+              onValueChange={(value: boolean) => updateSetting('soundEffects', value)}
               trackColor={{
                 false: GlobalStyles.colors.primary50,
                 true: GlobalStyles.colors.accent600,
@@ -78,7 +78,7 @@ function SettingsScreen() {
             <Text style={styles.settingsLabel}>Vibration</Text>
             <Switch
               value={settings.vibration}
-              onValueChange={value => updateSetting('vibration', value)}
+              onValueChange={(value: boolean) => updateSetting('vibration', value)}
               trackColor={{
                 false: GlobalStyles.colors.primary50,
                 true: GlobalStyles.colors.accent600,

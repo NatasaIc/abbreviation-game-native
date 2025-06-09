@@ -1,3 +1,8 @@
+/**
+ * GameScreen Component
+ * Main game interface where users play the abbreviation game
+ * Handles displaying questions, options, and game state
+ */
 import React from 'react';
 import {
   SafeAreaView,
@@ -6,7 +11,6 @@ import {
   ScrollView,
   Pressable,
   Text,
-  Animated,
   StyleSheet,
   Dimensions,
 } from 'react-native';
@@ -18,10 +22,17 @@ import OptionButton from '../components/OptionButton';
 import BonusText from '../components/BonusText';
 import GameOverModal from '../components/GameOverModal';
 import { GlobalStyles } from '../constants/styles';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../constants/types';
 
 const { height } = Dimensions.get('window');
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'GameScreen'>;
+
 const GameScreen = () => {
+  const navigation = useNavigation<NavigationProp>();
+  // Get game logic and state from custom hook
   const {
     category,
     currentWord,
@@ -38,14 +49,20 @@ const GameScreen = () => {
     isGameOver,
     handleGameOverDismiss,
   } = useGameLogic();
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
+
       <View style={styles.content}>
         <Text style={styles.categoryText}>{category}</Text>
+
         <GameStatus points={points} lives={guessLeft} />
+
         <WordCard word={currentWord} />
+
         <BonusText opacity={bonusOpacity} />
+
         <GameOverModal visible={isGameOver} onDismiss={handleGameOverDismiss} />
 
         <ScrollView
@@ -64,6 +81,7 @@ const GameScreen = () => {
             />
           ))}
         </ScrollView>
+        {/* Next question button - only shown after answering */}
         {hasAnswered && (
           <Pressable style={styles.nextButton} onPress={handleNextQuestion}>
             <LinearGradient colors={['#E6C229', '#F7D154']} style={styles.nextButtonGradient}>
@@ -86,17 +104,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     marginBottom: 30,
-    marginTop: 30,
   },
   content: {
-    flex: 1,
     alignItems: 'center',
-    paddingBottom: 30,
+    marginTop: height * 0.08,
   },
   optionsScrollView: {
-    flex: 1,
     width: '100%',
-    maxHeight: height * 0.4,
   },
   optionsContainer: {
     width: '100%',
@@ -104,10 +118,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 16,
+    paddingVertical: 20,
   },
   nextButton: {
-    marginTop: 30,
     width: '55%',
+    marginTop: 10,
     borderRadius: 12,
     overflow: 'hidden',
   },

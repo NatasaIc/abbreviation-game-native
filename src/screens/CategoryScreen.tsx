@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, Pressable } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../constants/types';
@@ -10,6 +10,7 @@ import { GlobalStyles } from '../constants/styles';
 import CategoryCard from '../components/CategoryCard';
 import IconButton from '../UI/IconButton';
 
+const { height, width } = Dimensions.get('window');
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'CategoryScreen'>;
 
 const CategoryScreen = () => {
@@ -18,7 +19,6 @@ const CategoryScreen = () => {
 
   const getCategories = () => {
     const selected = [...new Set(abbreviations_with_categories.map(item => item.category))];
-
     setCategory(selected);
   };
 
@@ -79,7 +79,7 @@ const getCategoryCount = (category: string) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 30,
+    paddingTop: height * 0.1,
   },
   safeArea: {
     flex: 1,

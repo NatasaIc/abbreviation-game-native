@@ -1,3 +1,8 @@
+/**
+ * useGameLogic Hook
+ * Manages the core game state and logic
+ * Handles question generation, scoring, and game progression
+ */
 import { useEffect, useRef, useState } from 'react';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../constants/types';
@@ -13,11 +18,13 @@ const useGameLogic = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'GameScreen'>>();
   const { category, restart } = route.params;
 
+  // Game state
   const [currentWord, setCurrentWord] = useState('');
   const [options, setOptions] = useState<string[]>([]);
   const [points, setPoints] = useState<number>(0);
   const [answeredQuestions, setAnsweredQuestions] = useState<Set<string>>(new Set());
 
+  // Question state
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
   const [showAnswer, setShowAnswer] = useState(false);
@@ -26,6 +33,7 @@ const useGameLogic = () => {
   const [isGameOver, setIsGameOver] = useState(false);
   const [questionStartTime, setQuestionStartTime] = useState(Date.now());
 
+  // User settings
   const [settings, setSettings] = useState({
     soundEffects: true,
     vibration: true,
@@ -34,8 +42,10 @@ const useGameLogic = () => {
     username: '',
   });
 
+  // Animation value for bonus text
   const bonusOpacity = useRef(new Animated.Value(0)).current;
 
+  // Load user settings
   useEffect(() => {
     const loadSettings = async () => {
       try {
@@ -51,6 +61,7 @@ const useGameLogic = () => {
     loadSettings();
   }, []);
 
+  // Handle game restart
   useEffect(() => {
     if (route.params.restart) {
       resetGame();
@@ -60,9 +71,9 @@ const useGameLogic = () => {
     }
   }, [route.params.restart]);
 
+  // Check for game over
   useEffect(() => {
     if (guessLeft === 0) {
-      setIsGameOver(true);
       setIsGameOver(true);
       setTimeout(() => {
         setIsGameOver(false);
@@ -71,6 +82,7 @@ const useGameLogic = () => {
     }
   }, [guessLeft]);
 
+  // Trigger bonus animation
   const triggerBonusAnimation = () => {
     bonusOpacity.setValue(0);
 
@@ -91,6 +103,7 @@ const useGameLogic = () => {
     ]).start();
   };
 
+  // Play sound effects
   const playSound = async (type: 'correct' | 'incorrect') => {
     if (!settings.soundEffects) return;
 
@@ -112,9 +125,12 @@ const useGameLogic = () => {
           await sound.unloadAsync();
         }
       });
-    } catch (error) {}
+    } catch (error) {
+      console.warn('Sound playback error:', error);
+    }
   };
 
+  // Reset game state
   const resetGame = () => {
     setPoints(0);
     setGuessLeft(3);
@@ -123,6 +139,7 @@ const useGameLogic = () => {
     generateQuestion();
   };
 
+  // Generate new question
   const generateQuestion = () => {
     setQuestionStartTime(Date.now());
 
@@ -151,6 +168,7 @@ const useGameLogic = () => {
     setCorrectAnswer(selected.correct_answer);
   };
 
+  // Handle user's guess
   const handleGuess = (option: string) => {
     const timeTaken = Date.now() - questionStartTime;
     const isCorrect = option === correctAnswer;
@@ -178,11 +196,7 @@ const useGameLogic = () => {
     setAnsweredQuestions(prev => new Set([...prev, currentWord]));
   };
 
-  /**
-   * Prepares the game for the next question by:
-   * 1. Resetting UI states
-   * 2. Generating a new question
-   */
+  // Move to next question
   const handleNextQuestion = () => {
     setShowAnswer(false);
     setSelectedOption('');
@@ -190,6 +204,7 @@ const useGameLogic = () => {
     generateQuestion();
   };
 
+  // Handle game over modal dismissal
   const handleGameOverDismiss = () => {
     setIsGameOver(false);
     navigation.navigate('ResultScreen', { points, category });
