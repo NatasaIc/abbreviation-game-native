@@ -84,19 +84,10 @@ abbreviationGame/
 - AsyncStorage
 - React Native Gesture Handler
 
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 👥 Authors
 
-- Your Name - Initial work
-
-## 🙏 Acknowledgments
-
-- Thanks to all contributors
-- Special thanks to the React Native and Expo communities
+- Natasa Iconomou - Initial work
