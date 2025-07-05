@@ -30,40 +30,11 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function Navigation() {
   return (
     <Stack.Navigator
-      screenOptions={({
-        navigation,
-      }: {
-        navigation: NativeStackNavigationProp<RootStackParamList>;
-      }) => ({
-        headerStyle: {
-          backgroundColor: GlobalStyles.colors.primary700,
-          shadowColor: 'transparent',
-          elevation: 0,
-        },
-        headerTintColor: GlobalStyles.colors.accent500,
-        headerRight: () => (
-          <IconButton
-            icon="settings"
-            size={24}
-            color={GlobalStyles.colors.accent500}
-            onPress={() => {
-              navigation.navigate('SettingsScreen');
-            }}
-            style={{
-              marginRight: Platform.OS === 'android' ? 16 : 0,
-            }}
-          />
-        ),
-      })}
+      screenOptions={{
+        headerShown: false,
+      }}
     >
-      <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{
-          headerShown: true,
-          title: 'Abbreviation Game',
-        }}
-      />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
       <Stack.Screen
         name="CategoryScreen"
         component={CategoryScreen}
@@ -85,7 +56,7 @@ function Navigation() {
       <Stack.Screen
         name="SettingsScreen"
         component={SettingsScreen}
-        options={{ headerShown: true, title: 'Settings' }}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

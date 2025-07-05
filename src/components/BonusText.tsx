@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFD700',
     position: 'absolute',
-    top: 160,
+    top: 140,
     zIndex: 10,
     alignSelf: 'center',
     textShadowColor: '#000',

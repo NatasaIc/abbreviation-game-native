@@ -5,6 +5,7 @@ import { RootStackParamList } from '../constants/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlobalStyles } from '../constants/styles';
 import BouncingButton from '../components/BouncingButton';
+import IconButton from '../UI/IconButton';
 
 const { height, width } = Dimensions.get('window');
 
@@ -16,6 +17,15 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
+      <View>
+        <IconButton
+          icon="settings"
+          color={GlobalStyles.colors.accent500}
+          size={20}
+          onPress={() => navigation.navigate('SettingsScreen')}
+          style={styles.iconButton}
+        />
+      </View>
 
       <SafeAreaView style={styles.content}>
         <View>
@@ -39,6 +49,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: GlobalStyles.colors.primary500,
+  },
+  iconButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    margin: 20,
   },
   content: {
     marginTop: height * 0.1,

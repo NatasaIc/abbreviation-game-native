@@ -1,7 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { View, Text, SafeAreaView, ScrollView, TextInput, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import { Switch } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
 
 import { GlobalStyles } from '../constants/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -55,6 +64,12 @@ function SettingsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color={GlobalStyles.colors.text500} />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Settings</Text>
+      </View>
       <ScrollView style={styles.scrollView}>
         {/* Preferences Section */}
         <View style={styles.section}>
@@ -95,6 +110,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: GlobalStyles.colors.primary500,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: GlobalStyles.colors.primary400,
+  },
+  backButton: {
+    padding: 8,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: GlobalStyles.colors.text500,
+    marginLeft: 8,
   },
   scrollView: {
     flex: 1,
